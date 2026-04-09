@@ -45,9 +45,11 @@ def init():
 #################################################
 
 def render():
+    global selecionado
     glClear(GL_COLOR_BUFFER_BIT) # limpa o buffer
     glLoadIdentity() # limpa a identidade
 
+    # triangulo 1
     glPushMatrix()
     glColor3f(1, 0, 0) # cor do objeto
     glTranslatef(0 + tx, 0 + ty, 1)
@@ -57,8 +59,20 @@ def render():
     glVertex2f(p2x, p2y) # vertice 2
     glVertex2f(p3x, p3y) # vertice 3
     glEnd()
-    glPopMatrix()
+    # borda
+    if selecionado == 1:
+        glColor3f(0, 0, 0)
+        glLineWidth(4)
+        glBegin(GL_LINE_LOOP)
+        glVertex2f(p1x, p1y) # vertice 1
+        glVertex2f(p2x, p2y) # vertice 2
+        glVertex2f(p3x, p3y) # vertice 3
+        glEnd()
+        glPopMatrix()
+    else:
+        glPopMatrix()
 
+    # triangulo 2
     glPushMatrix()
     glColor3f(0, 1, 0) # cor do objeto
     glTranslatef(0 + tx2, 0 + ty2, 1)
@@ -68,7 +82,18 @@ def render():
     glVertex2f(pp2x, pp2y) # vertice 2
     glVertex2f(pp3x, pp3y) # vertice 3
     glEnd()
-    glPopMatrix()
+    # borda
+    if selecionado == 2:
+        glColor3f(0, 0, 0)
+        glLineWidth(4)
+        glBegin(GL_LINE_LOOP)
+        glVertex2f(pp1x, pp1y) # vertice 1
+        glVertex2f(pp2x, pp2y) # vertice 2
+        glVertex2f(pp3x, pp3y) # vertice 3
+        glEnd()
+        glPopMatrix()
+    else:
+        glPopMatrix()
 
 #################################################
 

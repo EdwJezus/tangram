@@ -11,16 +11,31 @@ p3y = 0
 tx = 0
 ty = 0
 rt = 0
+pp1x = 0
+pp1y = 0
+pp2x = 0
+pp2y = 0
+pp3x = 0
+pp3y = 0
+tx2 = 0.7
+ty2 = 0
+rt2 = 0
 
 def init():
     glClearColor(1, 1, 1, 1) # bg color
-    global p1x, p1y, p2x, p2y, p3x, p3y
+    global p1x, p1y, p2x, p2y, p3x, p3y, pp1x, pp1y, pp2x, pp2y, pp3x, pp3y
     p1x = -0.5
     p1y = -0.5
     p2x = 0.5
     p2y = -0.5
     p3x = 0.0
     p3y = 0.5
+    pp1x = -0.5
+    pp1y = -0.5
+    pp2x = 0.5
+    pp2y = -0.5
+    pp3x = 0.0
+    pp3y = 0.5
     
 def render():
     glClear(GL_COLOR_BUFFER_BIT) # limpa o buffer
@@ -34,6 +49,17 @@ def render():
     glVertex2f(p1x, p1y) # vertice 1
     glVertex2f(p2x, p2y) # vertice 2
     glVertex2f(p3x, p3y) # vertice 3
+    glEnd()
+    glPopMatrix()
+
+    glPushMatrix()
+    glColor3f(0, 1, 0) # cor do objeto
+    glTranslatef(0 + tx2, 0 + ty2, 1)
+    glRotatef(0 + rt2, 0, 0, 1)
+    glBegin(GL_TRIANGLES)
+    glVertex2f(pp1x, pp1y) # vertice 1
+    glVertex2f(pp2x, pp2y) # vertice 2
+    glVertex2f(pp3x, pp3y) # vertice 3
     glEnd()
     glPopMatrix()
 

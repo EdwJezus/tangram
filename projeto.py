@@ -1,6 +1,7 @@
 import glfw
 from OpenGL.GL import *
 
+estado_clique = 0
 p1x = 0
 p1y = 0
 p2x = 0
@@ -10,8 +11,6 @@ p3y = 0
 tx = 0
 ty = 0
 rt = 0
-mouse_antes = glfw.RELEASE
-modo_mouse = False
 
 def init():
     glClearColor(1, 1, 1, 1) # bg color
@@ -29,7 +28,6 @@ def render():
 
     glPushMatrix()
     glColor3f(1, 0, 0) # cor do objeto
-    
     glTranslatef(0 + tx, 0 + ty, 1)
     glRotatef(0 + rt, 0, 0, 1)
     glBegin(GL_TRIANGLES)
@@ -56,14 +54,15 @@ def teclado(window):
         rt -= 0.1
 
 def mouse(window):
-    global mouse_antes, modo_mouse
-    estado = glfw.get_mouse_button(window, glfw.MOUSE_BUTTON_LEFT) 
-    if estado == glfw.PRESS and mouse_antes == glfw.RELEASE:
-        modo_mouse = not modo_mouse
-    mouse_antes = estado
-    if modo_mouse:
+    global estado_clique
+    if glfw.get_mouse_button(window, glfw.MOUSE_BUTTON_LEFT) == glfw.PRESS:
+        if estado_clique == 0:
+            estado_clique = 1
+        elif estado_clique == 1:
+            estado_clique = 0      
+    if estado_clique == 1:
         teclado(window)
-
+        
 def main():
     glfw.init()
     window = glfw.create_window(500, 500, 'Projeto', None, None)

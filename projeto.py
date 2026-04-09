@@ -29,8 +29,9 @@ def render():
 
     glPushMatrix()
     glColor3f(1, 0, 0) # cor do objeto
-    glRotatef(0 + rt, 0, 0, 1)
+    
     glTranslatef(0 + tx, 0 + ty, 1)
+    glRotatef(0 + rt, 0, 0, 1)
     glBegin(GL_TRIANGLES)
     glVertex2f(p1x, p1y) # vertice 1
     glVertex2f(p2x, p2y) # vertice 2
@@ -56,17 +57,13 @@ def teclado(window):
 
 def mouse(window):
     global mouse_antes, modo_mouse
-    
     estado = glfw.get_mouse_button(window, glfw.MOUSE_BUTTON_LEFT) 
-    
     if estado == glfw.PRESS and mouse_antes == glfw.RELEASE:
         modo_mouse = not modo_mouse
-        
     mouse_antes = estado
-
     if modo_mouse:
         teclado(window)
-        
+
 def main():
     glfw.init()
     window = glfw.create_window(500, 500, 'Projeto', None, None)

@@ -2,51 +2,22 @@ import glfw
 from OpenGL.GL import *
 
 selecionado = 0
-obj = 0
-color = 0,0,0
 estado_clique = 0
-p1x = 0
-p1y = 0
-p2x = 0
-p2y = 0
-p3x = 0
-p3y = 0
-tx = 0
-ty = 0
-rt = 0
-##########
-pp1x = 0
-pp1y = 0
-pp2x = 0
-pp2y = 0
-pp3x = 0
-pp3y = 0
-tx2 = 0.7
-ty2 = 0
-rt2 = 0
+triangulos = []
+
+#p1x, p1y, p2x, p2y, p3x, p3y, tx, ty, rt
+triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, 0, 0, 0, (1, 0, 0)))
+triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, 0.7, 0, 0, (0, 1, 0)))
+triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, -0.7, 0, 0, (0, 0, 1)))
 
 #################################################
 
 def init():
     glClearColor(1, 1, 1, 1) # bg color
-    global p1x, p1y, p2x, p2y, p3x, p3y, pp1x, pp1y, pp2x, pp2y, pp3x, pp3y
-    p1x = -0.5
-    p1y = -0.5
-    p2x = 0.5
-    p2y = -0.5
-    p3x = 0.0
-    p3y = 0.5
-    #
-    pp1x = -0.5
-    pp1y = -0.5
-    pp2x = 0.5
-    pp2y = -0.5
-    pp3x = 0.0
-    pp3y = 0.5
 
 #################################################
 
-def cria_triangulo(tx, ty, rt, p1x, p1y, p2x, p2y, p3x, p3y, obj, color):
+def cria_triangulo(p1x, p1y, p2x, p2y, p3x, p3y, tx, ty, rt, color, obj):
     glPushMatrix()
     glColor3f(*color) # cor do objeto
     glTranslatef(0 + tx, 0 + ty, 1)
@@ -70,50 +41,58 @@ def cria_triangulo(tx, ty, rt, p1x, p1y, p2x, p2y, p3x, p3y, obj, color):
 #################################################
 
 def render():
-    global selecionado
+    global selecionado, triangulos
     glClear(GL_COLOR_BUFFER_BIT) # limpa o buffer
     glLoadIdentity() # limpa a identidade
 
-    cria_triangulo(tx, ty, rt, p1x, p1y, p2x, p2y, p3x, p3y, 1, (1,0,0))
-    cria_triangulo(tx2, ty2, rt2, pp1x, pp1y, pp2x, pp2y, pp3x, pp3y, 2, (0,1,0))
+    for t in range(len(triangulos)): #for para criar triangulos
+        cria_triangulo(
+                triangulos[t][0], #p1x
+                triangulos[t][1], #p1y
+                triangulos[t][2], #p2x
+                triangulos[t][3], #p2y
+                triangulos[t][4], #p3x
+                triangulos[t][5], #p3y
+                triangulos[t][6], #tx
+                triangulos[t][7], #ty
+                triangulos[t][8], #rt
+                triangulos[t][9], #color
+                t + 1, )
+
+#################################################
+
+def movimento(window, indice):
+    triangulo = list(triangulos[indice]) #transforma tupla em lista
+    if selecionado == indice + 1:
+        if glfw.get_key(window, glfw.KEY_UP) == glfw.PRESS:
+            triangulo[7] += 0.001
+        if glfw.get_key(window, glfw.KEY_DOWN) == glfw.PRESS:
+            triangulo[7] -= 0.001
+        if glfw.get_key(window, glfw.KEY_LEFT) == glfw.PRESS:
+            triangulo[6] -= 0.001
+        if glfw.get_key(window, glfw.KEY_RIGHT) == glfw.PRESS:
+            triangulo[6] += 0.001
+        if glfw.get_key(window, glfw.KEY_Q) == glfw.PRESS:
+            triangulo[8] += 0.1
+        if glfw.get_key(window, glfw.KEY_E) == glfw.PRESS:
+            triangulo[8] -= 0.1  
+    triangulos[indice] = tuple(triangulo) #transforma lista em tupla de volta
 
 #################################################
 
 def teclado(window):
-    global selecionado, tx, ty, rt, tx2, ty2, rt2
+    global triangulos, selecionado
     if glfw.get_key(window, glfw.KEY_1) == glfw.PRESS:
         selecionado = 1
     ###################
     elif glfw.get_key(window, glfw.KEY_2) == glfw.PRESS:
         selecionado = 2
     ###################
-    if selecionado == 1:
-        if glfw.get_key(window, glfw.KEY_UP) == glfw.PRESS:
-            ty += 0.001
-        if glfw.get_key(window, glfw.KEY_DOWN) == glfw.PRESS:
-            ty -= 0.001
-        if glfw.get_key(window, glfw.KEY_LEFT) == glfw.PRESS:
-            tx -= 0.001
-        if glfw.get_key(window, glfw.KEY_RIGHT) == glfw.PRESS:
-            tx += 0.001
-        if glfw.get_key(window, glfw.KEY_Q) == glfw.PRESS:
-            rt += 0.1
-        if glfw.get_key(window, glfw.KEY_E) == glfw.PRESS:
-            rt -= 0.1  
-    #####################
-    elif selecionado == 2:
-        if glfw.get_key(window, glfw.KEY_UP) == glfw.PRESS:
-            ty2 += 0.001
-        if glfw.get_key(window, glfw.KEY_DOWN) == glfw.PRESS:
-            ty2 -= 0.001
-        if glfw.get_key(window, glfw.KEY_LEFT) == glfw.PRESS:
-            tx2 -= 0.001
-        if glfw.get_key(window, glfw.KEY_RIGHT) == glfw.PRESS:
-            tx2 += 0.001
-        if glfw.get_key(window, glfw.KEY_Q) == glfw.PRESS:
-            rt2 += 0.1
-        if glfw.get_key(window, glfw.KEY_E) == glfw.PRESS:
-            rt2 -= 0.1
+    elif glfw.get_key(window, glfw.KEY_3) == glfw.PRESS:
+        selecionado = 3
+    ###################
+    for t in range(len(triangulos)): #aplica movimento pra cada triangulo criado
+        movimento(window, t)
 
 #################################################
 

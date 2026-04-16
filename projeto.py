@@ -4,11 +4,22 @@ from OpenGL.GL import *
 selecionado = 0
 estado_clique = 0
 triangulos = []
+cores = [
+    (1, 0, 0), 
+    (0, 1, 0),
+    (0, 0, 1),
+    (1, 1, 0),
+    (1, 0, 1),
+    (0, 1, 1),
+]
 
-#p1x, p1y, p2x, p2y, p3x, p3y, tx, ty, rt
-triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, 0, 0, 0, (1, 0, 0)))
-triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, 0.7, 0, 0, (0, 1, 0)))
-triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, -0.7, 0, 0, (0, 0, 1)))
+for i in range(3): #define quantidade de triangulos
+    pos_y = -0.8 + i * 0.5
+    cor = cores[i % len(cores)] #gera ciclos de cores no indice 
+
+    #p1x, p1y, p2x, p2y, p3x, p3y, tx, ty, rt
+    triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, pos_y, 0, 0, cor))
+
 
 #################################################
 
@@ -82,17 +93,11 @@ def movimento(window, indice):
 
 def teclado(window):
     global triangulos, selecionado
-    if glfw.get_key(window, glfw.KEY_1) == glfw.PRESS:
-        selecionado = 1
-    ###################
-    elif glfw.get_key(window, glfw.KEY_2) == glfw.PRESS:
-        selecionado = 2
-    ###################
-    elif glfw.get_key(window, glfw.KEY_3) == glfw.PRESS:
-        selecionado = 3
-    ###################
-    for t in range(len(triangulos)): #aplica movimento pra cada triangulo criado
-        movimento(window, t)
+
+    for t in range(len(triangulos)): #for que percorre todos triangulos
+        movimento(window, t) #aplica movimento pra cada triangulo criado
+        if glfw.get_key(window, glfw.KEY_1 + t) == glfw.PRESS: #faz if de seletor para cada triangulo
+            selecionado = t+1
 
 #################################################
 

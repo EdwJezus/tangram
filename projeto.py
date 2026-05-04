@@ -1,103 +1,177 @@
 import glfw
 from OpenGL.GL import *
+import math
 
 selecionado = 0
 estado_clique = 0
-triangulos = []
-cores = [
-    (1, 0, 0), 
-    (0, 1, 0),
-    (0, 0, 1),
-    (1, 1, 0),
-    (1, 0, 1),
-    (0, 1, 1),
-]
+pecas = []
 
-for i in range(3): #define quantidade de triangulos
-    pos_y = -0.8 + i * 0.5
-    cor = cores[i % len(cores)] #gera ciclos de cores no indice 
+#### triangulos
+# pequeno 1
+pecas.append({
+    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)],
+    "tx": -0.7, 
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (1, 1, 1), 
+    "cor": (1, 0, 0)
+    })
+# pequeno 2
+pecas.append({
+    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "tx":-0.5, 
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (1, 1, 1), 
+    "cor": (0, 1, 0)
+    }) 
+# medio
+pecas.append({
+    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "tx": -0.3,
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (math.sqrt(2), math.sqrt(2), 1), 
+    "cor": (0, 0, 1)
+    }) 
+# grande 1
+pecas.append({
+    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "tx": -0.1, 
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (2, 2, 1), 
+    "cor": (1, 1, 0)
+    }) 
+# grande 2
+pecas.append({
+    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "tx": 0.1, 
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (2, 2, 1), 
+    "cor": (1, 0, 1)
+    }) 
 
-    #p1x, p1y, p2x, p2y, p3x, p3y, tx, ty, rt
-    triangulos.append((-0.5, -0.5, 0.5, -0.5, 0, 0.5, pos_y, 0, 0, cor))
+#### quadrado
+pecas.append({
+    "triangulos": [
+        (-0.5, -0.5, 0.5, -0.5, 0.5, 0.5), 
+        (-0.5, -0.5, 0.5, 0.5, -0.5, 0.5) 
+    ],
+    "tx": -0.7, 
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (1, 1, 1), 
+    "cor": (0, 1, 1)
+    })
 
+#### paralelograma
+pecas.append({
+    "triangulos": [
+        (-0.5, -0.5, 0.5, -0.5 , 0.0, 0.5),
+        (-0.5, -0.5, 0.0, 0.5, -1.0, 0.5)
+    ],
+    "tx": 0.0, 
+    "ty": 0, 
+    "rt": 0, 
+    "scale": (1, 1, 1), 
+    "cor": (0, 0, 1)
+    })     
 
 #################################################
 
 def init():
     glClearColor(1, 1, 1, 1) # bg color
+    
+    glMatrixMode(GL_PROJECTION) # muda pra projection
+    glLoadIdentity() 
+    glMatrixMode(GL_MODELVIEW)  # volta pro modelview
 
 #################################################
 
-def cria_triangulo(p1x, p1y, p2x, p2y, p3x, p3y, tx, ty, rt, color, obj):
-    glPushMatrix()
-    glColor3f(*color) # cor do objeto
-    glTranslatef(0 + tx, 0 + ty, 1)
-    glRotatef(0 + rt, 0, 0, 1)
-    glBegin(GL_TRIANGLES)
-    glVertex2f(p1x, p1y) # vertice 1
-    glVertex2f(p2x, p2y) # vertice 2
-    glVertex2f(p3x, p3y) # vertice 3
-    glEnd()
-    # borda
-    if selecionado == obj:
-        glColor3f(0, 0, 0)
-        glLineWidth(4)
-        glBegin(GL_LINE_LOOP)
-        glVertex2f(p1x, p1y) # vertice 1
-        glVertex2f(p2x, p2y) # vertice 2
-        glVertex2f(p3x, p3y) # vertice 3
-        glEnd()
-    glPopMatrix()
+def resize(window, width, height):
+    glViewport(0, 0, width, height)
+
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    glOrtho(-2, 2, -2, 2, -1, 1)
+
+    glMatrixMode(GL_MODELVIEW)
 
 #################################################
 
 def render():
-    global selecionado, triangulos
-    glClear(GL_COLOR_BUFFER_BIT) # limpa o buffer
-    glLoadIdentity() # limpa a identidade
+    global selecionado
+    
+    glClear(GL_COLOR_BUFFER_BIT)
+    glLoadIdentity()
+    
+    for i, p in enumerate(pecas):
+        glPushMatrix()
 
-    for t in range(len(triangulos)): #for para criar triangulos
-        cria_triangulo(
-                triangulos[t][0], #p1x
-                triangulos[t][1], #p1y
-                triangulos[t][2], #p2x
-                triangulos[t][3], #p2y
-                triangulos[t][4], #p3x
-                triangulos[t][5], #p3y
-                triangulos[t][6], #tx
-                triangulos[t][7], #ty
-                triangulos[t][8], #rt
-                triangulos[t][9], #color
-                t + 1, )
+        glTranslatef(p["tx"], p["ty"], 0)
+        glRotatef(p["rt"], 0, 0, 1)
+        glScalef(*p["scale"])
+        
+        # desenha preenchimento
+        glColor3f(*p["cor"])
+        for tri in p["triangulos"]:
+            glBegin(GL_TRIANGLES)
+            glVertex2f(tri[0], tri[1])
+            glVertex2f(tri[2], tri[3])
+            glVertex2f(tri[4], tri[5])
+            glEnd()
+
+        # desenha contorno SE selecionado
+        if selecionado == i + 1:
+            glColor3f(0, 0, 0)
+            glLineWidth(3)
+
+            for tri in p["triangulos"]:
+                glBegin(GL_LINE_LOOP)
+                glVertex2f(tri[0], tri[1])
+                glVertex2f(tri[2], tri[3])
+                glVertex2f(tri[4], tri[5])
+                glEnd()
+
+        glPopMatrix()
 
 #################################################
 
 def movimento(window, indice):
-    triangulo = list(triangulos[indice]) #transforma tupla em lista
+    peca = pecas[indice]
+
     if selecionado == indice + 1:
         if glfw.get_key(window, glfw.KEY_UP) == glfw.PRESS:
-            triangulo[7] += 0.001
+            peca["ty"] += 0.001
         if glfw.get_key(window, glfw.KEY_DOWN) == glfw.PRESS:
-            triangulo[7] -= 0.001
+            peca["ty"] -= 0.001
         if glfw.get_key(window, glfw.KEY_LEFT) == glfw.PRESS:
-            triangulo[6] -= 0.001
+            peca["tx"] -= 0.001
         if glfw.get_key(window, glfw.KEY_RIGHT) == glfw.PRESS:
-            triangulo[6] += 0.001
+            peca["tx"] += 0.001
         if glfw.get_key(window, glfw.KEY_Q) == glfw.PRESS:
-            triangulo[8] += 0.1
+            peca["rt"] += 0.1
         if glfw.get_key(window, glfw.KEY_E) == glfw.PRESS:
-            triangulo[8] -= 0.1  
-    triangulos[indice] = tuple(triangulo) #transforma lista em tupla de volta
+            peca["rt"] -= 0.1
+
+    # limitar area de movimento
+    limite = 2
+
+    peca["tx"] = max(-limite, min(limite, peca["tx"]))
+    peca["ty"] = max(-limite, min(limite, peca["ty"]))
 
 #################################################
 
 def teclado(window):
-    global triangulos, selecionado
+    global selecionado
 
-    for t in range(len(triangulos)): #for que percorre todos triangulos
-        movimento(window, t) #aplica movimento pra cada triangulo criado
-        if glfw.get_key(window, glfw.KEY_1 + t) == glfw.PRESS: #faz if de seletor para cada triangulo
-            selecionado = t+1
+    for i in range(len(pecas)):  #for que percorre todas peças
+        movimento(window, i)     #aplica movimento pra cada peça criada
+
+        if glfw.get_key(window, glfw.KEY_1 + i) == glfw.PRESS: #faz if de seletor para cada peça
+            selecionado = i + 1
 
 #################################################
 
@@ -117,9 +191,13 @@ def mouse(window):
 
 def main():
     glfw.init()
-    window = glfw.create_window(500, 500, 'Projeto', None, None)
+    window = glfw.create_window(500, 500, 'Projeto Tangram', None, None)
+    glfw.set_window_aspect_ratio(window, 1, 1) # mantem janela em formato quadrado
     glfw.make_context_current(window)
+    glfw.set_framebuffer_size_callback(window, resize)
     init()
+    width, height = glfw.get_framebuffer_size(window)
+    resize(window, width, height)
     while not glfw.window_should_close(window):
         glfw.poll_events()
         #mouse(window)

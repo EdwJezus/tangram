@@ -9,7 +9,7 @@ pecas = []
 #### triangulos
 # pequeno 1
 pecas.append({
-    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)],
+    "triangulos": [(0, 0, 1, 0, 0, 1)],
     "tx": -0.7, 
     "ty": 0, 
     "rt": 0, 
@@ -18,7 +18,7 @@ pecas.append({
     })
 # pequeno 2
 pecas.append({
-    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "triangulos": [(0, 0, 1, 0, 0, 1)], 
     "tx":-0.5, 
     "ty": 0, 
     "rt": 0, 
@@ -27,7 +27,7 @@ pecas.append({
     }) 
 # medio
 pecas.append({
-    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "triangulos": [(0, 0, 1, 0, 0, 1)], 
     "tx": -0.3,
     "ty": 0, 
     "rt": 0, 
@@ -36,7 +36,7 @@ pecas.append({
     }) 
 # grande 1
 pecas.append({
-    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "triangulos": [(0, 0, 1, 0, 0, 1)], 
     "tx": -0.1, 
     "ty": 0, 
     "rt": 0, 
@@ -45,7 +45,7 @@ pecas.append({
     }) 
 # grande 2
 pecas.append({
-    "triangulos": [(-0.5, -0.5, 0.5, -0.5, 0, 0)], 
+    "triangulos": [(0, 0, 1, 0, 0, 1)], 
     "tx": 0.1, 
     "ty": 0, 
     "rt": 0, 
@@ -56,28 +56,28 @@ pecas.append({
 #### quadrado
 pecas.append({
     "triangulos": [
-        (-0.5, -0.5, 0.5, -0.5, 0.5, 0.5), 
-        (-0.5, -0.5, 0.5, 0.5, -0.5, 0.5) 
+        (-0.5, -0.5, 0.5, -0.5, -0.5, 0.5),
+        (0.5, -0.5, 0.5, 0.5, -0.5, 0.5)
     ],
-    "tx": -0.7, 
-    "ty": 0, 
-    "rt": 0, 
-    "scale": (1, 1, 1), 
+    "tx": -0.7,
+    "ty": 0,
+    "rt": 0,
+    "scale": (1, 1, 1),
     "cor": (0, 1, 1)
-    })
+})
 
-#### paralelograma
+#### paralelograma 
 pecas.append({
     "triangulos": [
-        (-0.5, -0.5, 0.5, -0.5 , 0.0, 0.5),
-        (-0.5, -0.5, 0.0, 0.5, -1.0, 0.5)
+        (0, 0,  1, 0,  0.5, 0.5),   
+        (1, 0,  1.5, 0.5,  0.5, 0.5) 
     ],
-    "tx": 0.0, 
-    "ty": 0, 
-    "rt": 0, 
-    "scale": (1, 1, 1), 
-    "cor": (0, 0, 1)
-    })     
+    "tx": 0.3,
+    "ty": 0,
+    "rt": 0,
+    "scale": (math.sqrt(2), math.sqrt(2), 1),
+    "cor": (1, 0.5, 0)
+})
 
 #################################################
 

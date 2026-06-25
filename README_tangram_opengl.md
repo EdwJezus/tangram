@@ -6,46 +6,55 @@ Este projeto implementa um jogo clássico de Tangram utilizando Python, OpenGL e
 
 ## 📁 Estrutura do Projeto
 
+```
 .
-├── projeto.py
-├── sounds/
+├── projeto.py              # Código principal do jogo (OpenGL + GLFW)
+├── sounds/                 # Sons do jogo (acerto, erro, vitória e música de fundo)
 │   ├── error.wav
 │   ├── correct_place.wav
 │   ├── level_finished.wav
 │   └── soundtrack.wav
-├── manual_tangram.jpg
-├── modelo_tangram.jpg
-└── README.md
+├── manual_tangram.jpg      # Manual com teclas e instruções do jogo
+├── modelo_tangram.jpg      # Referência visual do encaixe final das peças
+└── README.md               # Este documento
+```
 
 ---
 
 ## 🎯 Objetivo do Jogo
 
-O jogador deve mover e rotacionar as peças até completar o modelo.
+O jogador deve mover e rotacionar as peças do tangram até que todas se encaixem corretamente na posição final mostrada no `modelo_tangram.jpg`.
 
-Quando concluir:
-- Vitória é ativada
-- Som de vitória toca
-- Animação especial no jogo
+Quando todas as peças estão corretas:
+- O jogo é concluído automaticamente
+- Um som de vitória é reproduzido
+- O fundo muda e há uma animação comemorativa
 
 ---
 
 ## 🎮 Controles
 
-- 1 a 7 → Selecionar peça
-- Setas → Mover peça
-- Q / E → Rotacionar
-- Enter → Confirmar encaixe
+| Tecla | Ação |
+|------|------|
+| `1` a `7` | Selecionar peça |
+| `Setas` | Mover peça selecionada |
+| `Q` | Rotacionar anti-horário |
+| `E` | Rotacionar horário |
+| `Enter` | Confirmar encaixe da peça |
 
 ---
 
 ## 🚀 Como Executar
 
 ### Instalar dependências
+```bash
 pip install glfw PyOpenGL
+```
 
 ### Rodar o jogo
+```bash
 python projeto.py
+```
 
 ---
 
